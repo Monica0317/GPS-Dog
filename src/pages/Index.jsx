@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { PawPrint } from "lucide-react";
-import styles from "./Index.module.css";
+import styles from "../styles/Index.module.css";
 import { AuthContext } from "../AuthContext";
 import { useContext } from "react";
 

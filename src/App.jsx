@@ -3,9 +3,10 @@ import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { appFirebase } from "./credenciales";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Login from "./components/Login";
-import Home from "./components/Home";
-import Index from "./components/Index";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Index from "./pages/Index";
+import Perfil from "./pages/Perfil";
 
 import "./App.css";
 
@@ -66,6 +67,17 @@ function App() {
           element={usuario ? <Home usuario={usuario} /> : <Index />}
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/perfil-mascota" element={<Perfil usuario={usuario} />} />
+        <Route path="/mapa" element={<div>Mapa en construcción</div>} />
+        <Route
+          path="/notificaciones"
+          element={<div>Notificaciones en construcción</div>}
+        />
+        <Route
+          path="/historial"
+          element={<div>Historial en construcción</div>}
+        />
+        <Route path="/recursos" element={<div>Recursos en construcción</div>} />
       </Routes>
     </Router>
   );
