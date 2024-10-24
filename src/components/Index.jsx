@@ -2,8 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { PawPrint } from "lucide-react";
 import styles from "./Index.module.css";
+import { AuthContext } from "../AuthContext";
+import { useContext } from "react";
 
 const Index = () => {
+  const { setRegistrando } = useContext(AuthContext);
+
   return (
     <div className="min-vh-100 min-vw-100 d-flex flex-column justify-content-center">
       <div className="container">
@@ -63,12 +67,14 @@ const Index = () => {
           <Link
             to="/login"
             className={`btn btn-primary rounded-pill px-5 py-2 ${styles.indexBtn}`}
+            onClick={() => setRegistrando(false)}
           >
             Crear Cuenta
           </Link>
           <Link
             to="/login"
             className={`btn btn-outline-primary rounded-pill px-5 py-2 ${styles.indexBtn}`}
+            onClick={() => setRegistrando(true)}
           >
             Iniciar Sesión
           </Link>

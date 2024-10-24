@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import Imagen from "../assets/perrito1.png";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthContext";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -12,8 +14,8 @@ import { appFirebase, database } from "../credenciales";
 const auth = getAuth(appFirebase);
 
 const Login = () => {
-  const [registrando, setRegistrando] = useState(false);
-
+  const { registrando, setRegistrando } = useContext(AuthContext);
+  const navigate = useNavigate();
   const funcAuth = async (e) => {
     e.preventDefault();
     const email = e.target.email.value.trim();
@@ -35,6 +37,9 @@ const Login = () => {
           email: email,
         });
         alert("Usuario registrado exitosamente");
+        if (userCredential.user) {
+          navigate("/", { replace: true });
+        }
       } else {
         const userCredential = await signInWithEmailAndPassword(
           auth,
@@ -42,6 +47,9 @@ const Login = () => {
           password
         );
         alert("Sesión iniciada exitosamente");
+        if (userCredential.user) {
+          navigate("/", { replace: true });
+        }
       }
     } catch (error) {
       if (error.code === "auth/invalid-email") {

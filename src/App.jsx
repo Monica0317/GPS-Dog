@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { appFirebase } from "./credenciales";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -16,16 +16,42 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Función para manejar la recarga de la página
+    const handleBeforeUnload = () => {
+      signOut(auth).catch((error) => {
+        console.error("Error al cerrar sesión:", error);
+      });
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     const unsubscribe = onAuthStateChanged(auth, (usuarioFirebase) => {
       if (usuarioFirebase) {
+        sessionStorage.setItem("isAuthenticated", "true");
         setUsuario(usuarioFirebase);
       } else {
+        sessionStorage.removeItem("isAuthenticated");
         setUsuario(null);
       }
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    // Verificar si hay una sesión guardada al cargar la página
+    const checkSession = () => {
+      const isAuthenticated = sessionStorage.getItem("isAuthenticated");
+      if (!isAuthenticated) {
+        signOut(auth).catch((error) => {
+          console.error("Error al cerrar sesión:", error);
+        });
+      }
+    };
+
+    checkSession();
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      unsubscribe();
+    };
   }, []);
 
   if (loading) {
