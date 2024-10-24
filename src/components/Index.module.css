@@ -1,0 +1,29 @@
+/* Index.module.css */
+.indexCard {
+  transition: transform 0.2s;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.indexCard:hover {
+  transform: translateY(-5px);
+}
+
+.indexShadowSm {
+  box-shadow: 0 0.125rem 1rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.indexBtn {
+  transition: all 0.2s ease;
+  min-width: 250px;
+}
+
+.indexBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .indexCol6 {
+    min-width: 80%;
+  }
+}

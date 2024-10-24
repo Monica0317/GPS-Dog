@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { appFirebase } from './credenciales';  // Importación nombrada
+import React, { useState, useEffect } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { appFirebase } from "./credenciales";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Login from './components/Login';
-import Home from './components/Home';
+import Login from "./components/Login";
+import Home from "./components/Home";
+import Index from "./components/Index";
 
-import './App.css';
+import "./App.css";
 
-// Inicializar la autenticación con Firebase
 const auth = getAuth(appFirebase);
 
 function App() {
@@ -17,24 +18,30 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usuarioFirebase) => {
       if (usuarioFirebase) {
-        setUsuario(usuarioFirebase);  // Guarda el objeto completo del usuario
+        setUsuario(usuarioFirebase);
       } else {
         setUsuario(null);
       }
-      setLoading(false);  // Finaliza el estado de carga
+      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
   if (loading) {
-    return <div>Cargando...</div>;  // Estado de carga
+    return <div>Cargando...</div>;
   }
 
   return (
-    <div>
-      {usuario ? <Home usuario={usuario} /> : <Login />}
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={usuario ? <Home usuario={usuario} /> : <Index />}
+        />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </Router>
   );
 }
 
