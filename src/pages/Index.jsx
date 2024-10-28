@@ -5,79 +5,90 @@ import styles from "../styles/Index.module.css";
 import { AuthContext } from "../AuthContext";
 import { useContext } from "react";
 
+
 const Index = () => {
   const { setRegistrando } = useContext(AuthContext);
 
   return (
-    <div className="min-vh-100 min-vw-100 d-flex flex-column justify-content-center">
-      <div className="container">
+
+    <div className={`${styles.pageContainer}`}>
+        <Link
+          to="/login"
+          className={`${styles.primaryButton}`}
+          onClick={() => setRegistrando(false)}
+        >
+          Crear Cuenta
+        </Link>
+        <Link
+          to="/login"
+          className={`${styles.secondaryButton}`}
+          onClick={() => setRegistrando(true)}
+        >
+          Iniciar Sesión
+        </Link>
+    
+
+      <div className={`${styles.contentContainer}`}>
+      <img src="/src/assets/perros.png" alt="Perro" className={`${styles.dogImage}`} />
+
         {/* Logo y Título */}
-        <div className="row justify-content-center text-center mb-5">
-          <div className="col-12 col-lg-8">
-            <PawPrint className="text-primary mb-3" size={48} />
-            <h1 className="display-4 fw-bold text-primary">PawTracker</h1>
-            <p className="lead text-secondary">
+        <div className={`${styles.centerContent} ${styles.mbLarge}`}>
+          <div className={`${styles.textContainer}`}>
+            <PawPrint className={`${styles.paw} display-4 fw-bold text-primary`} size={48} />
+            <h1 className={`${styles.title} display-4 fw-bold text-primary`}>PawTracker</h1>
+            <p className={`${styles.subtitle}`}>
               Mantén a tu mejor amigo seguro y localizado en todo momento
             </p>
           </div>
         </div>
 
-        {/* Características */}
-        <div className="row justify-content-center g-4 mb-5">
-          <div className="col-12 col-md-4 col-lg-3">
-            <div
-              className={`card h-100 text-center shadow-sm ${styles.indexCard} ${styles.indexShadowSm}`}
-            >
-              <div className="card-body">
-                <h3 className="h5 text-primary">Rastreo en Tiempo Real</h3>
-                <p className="card-text">
-                  Sigue los pasos de tu mascota con precisión GPS
-                </p>
+        {/* Carrusel con tarjetas */}
+        <div id="carouselExampleCaptions" className={`carousel slide ${styles.carousel}`} data-bs-ride="carousel">
+          <div className={`carousel-indicators ${styles.carouselIndicators}`}>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div className={`carousel-inner ${styles.carouselInner}`}>
+            <div className={`carousel-item active ${styles.carouselItem}`}>
+              <div className={`card h-100 text-center shadow-sm ${styles.featureCard} ${styles.shadow}`}>
+                <div className={`${styles.cardBody} card-body`}>
+                  <h3 className={` ${styles.cardTitle} `}>Rastreo en Tiempo Real</h3>
+                  <p className={`${styles.cardText} card-text`}>
+                    Sigue los pasos de tu mascota con precisión GPS
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className={`carousel-item ${styles.carouselItem}`}>
+              <div className={`card h-100 text-center shadow-sm ${styles.featureCard} ${styles.shadow}`}>
+                <div className={`${styles.cardBody}`}>
+                  <h3 className={` ${styles.cardTitle}`}>Zonas Seguras</h3>
+                  <p className={`${styles.cardText}`}>
+                    Establece perímetros seguros y recibe alertas
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className={`carousel-item ${styles.carouselItem}`}>
+              <div className={`card h-100 text-center shadow-sm ${styles.featureCard} ${styles.shadow}`}>
+                <div className={`${styles.cardBody}`}>
+                  <h3 className={`${styles.cardTitle}`}>Historial de Rutas</h3>
+                  <p className={`${styles.cardText}`}>
+                    Visualiza los recorridos diarios de tu mascota
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          <div className="col-12 col-md-3">
-            <div
-              className={`card h-100 text-center shadow-sm ${styles.indexCard} ${styles.indexShadowSm}`}
-            >
-              <div className="card-body">
-                <h3 className="h5 text-primary">Zonas Seguras</h3>
-                <p className="card-text">
-                  Establece perímetros seguros y recibe alertas
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-md-3">
-            <div
-              className={`card h-100 text-center shadow-sm ${styles.indexCard} ${styles.indexShadowSm}`}
-            >
-              <div className="card-body">
-                <h3 className="h5 text-primary">Historial de Rutas</h3>
-                <p className="card-text">
-                  Visualiza los recorridos diarios de tu mascota
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Botones */}
-        <div className="d-flex flex-column align-items-center gap-3">
-          <Link
-            to="/login"
-            className={`btn btn-primary rounded-pill px-5 py-2 ${styles.indexBtn}`}
-            onClick={() => setRegistrando(false)}
-          >
-            Crear Cuenta
-          </Link>
-          <Link
-            to="/login"
-            className={`btn btn-outline-primary rounded-pill px-5 py-2 ${styles.indexBtn}`}
-            onClick={() => setRegistrando(true)}
-          >
-            Iniciar Sesión
-          </Link>
+          <button className={`carousel-control-prev ${styles.carouselControlPrev}`} type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span className={`carousel-control-prev-icon ${styles.carouselControlPrevIcon}`} aria-hidden="true"></span>
+            <span className={`visually-hidden ${styles.visuallyHidden}`}></span>
+          </button>
+          <button className={`carousel-control-next ${styles.carouselControlNext}`} type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span className={`#carousel-Example-Captions${styles.carouselControlNextIcon}`} aria-hidden="true"></span>
+            <span className={`carousel-control-next-icon ${styles.visuallyHidden}`}></span>
+          </button>
         </div>
       </div>
     </div>

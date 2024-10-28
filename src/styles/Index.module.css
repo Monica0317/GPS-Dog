@@ -1,8 +1,55 @@
-/* Index.module.css */
-.indexCard {
-  transition: transform 0.2s;
-  background-color: rgba(255, 255, 255, 0.9);
+
+.primaryButton,
+.secondaryButton {
+  position:absolute;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 50px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  z-index: 1;
+  gap: 10px;
 }
+.dogImage{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  margin: 0 70px 0;
+  top: 35px;
+  position: relative;
+  width: 90%;
+  left: 50%;
+  height: 510px;
+}
+
+.primaryButton {
+  display: flex;
+  background-color: #0462c7;
+  color: #ffffff;
+  border: none;
+  top: 70%;
+  right: 600px;
+  text-decoration: none;
+
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: #0462c7;
+  border: 2px solid #0462c7;
+  top: 40px;
+  left:86%;
+  text-decoration: none;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
 
 .indexCard:hover {
   transform: translateY(-5px);
@@ -15,6 +62,7 @@
 .indexBtn {
   transition: all 0.2s ease;
   min-width: 250px;
+  max-width: 100%;
 }
 
 .indexBtn:hover {
@@ -22,8 +70,109 @@
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
-  .indexCol6 {
-    min-width: 80%;
-  }
+.contentContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 29px 5px rgb(104, 104, 104); /* Sombra ligera */
+  background: url("/src/assets/1.png");
+  margin: 0 70px 0; 
+  position: relative;
+  width: 94%;
+  right:25px;
+  height: 580px;
+  margin-top: 30px;
+  border-radius: 10px;
+}
+
+.TpageContainer{
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
+}
+.title{
+  margin-top: -210px;
+  margin-left: -160%;
+  color: black;
+}
+.paw{
+  margin-top: -440px;
+  margin-left: -112%;
+}
+.subtitle{
+  margin-left: -160%;
+}
+/* Estilo general del carrusel */
+.carousel {
+  width: 100%; /* Asegura que el carrusel ocupe el ancho completo */
+  max-width: 300px; /* Tamaño máximo para evitar ampliaciones */
+  height: 200px; /* Altura fija para el carrusel */
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  top: 50px;
+  right: 65%;
+  margin: 10px 0 2px; /* Centrado y con margen inferior */
+  position: relative;
+}
+
+.carouselInner {
+  display: flex;
+  width: 50%;
+  height: 70%;
+
+}
+.cardTitle{
+  font-family: 'Poppins', sans-serif; 
+  font-weight: 900; 
+  font-size:20px; 
+  color: #ffffff; 
+  text-align: center; 
+  line-height: 1.2; 
+  position: relative;
+  text-shadow: 
+  -2px -2px 0 #0056b3,
+   2px -2px 0 #0056b3,
+  -2px  2px 0 #0056b3,
+   2px  2px 0 #0056b3,
+   0px  4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.carouselItem {
+  display: flex;
+  top: 20px;
+
+}
+
+.carouselControlPrevIcon,
+.carouselControlNextIcon {
+  filter: invert(0);
+
+}
+
+.carouselControlPrev,
+.carouselControlNext {
+  width: 5%; 
+  top: 50%; /* Centra verticalmente */
+  transform: translateY(-10%);
+}
+
+.carouselControlPrev {
+  transform: translatex(-100%); 
+}
+
+.carouselControlNext {
+  transform: translatex(100%);
+}
+
+/* Posición de los indicadores */
+.carouselIndicators {
+  position: absolute;
+  bottom: -40px; 
+  left: 50%;
+  transform: translateX(0);
+}
+.carouselIndicators button{
+  width: 10%;
+  height: 10%;
+  border-radius: 50%; 
+  background-color: rgba(255, 255, 255, 0.5); 
+  transition: background-color 0.3s ease;
 }
