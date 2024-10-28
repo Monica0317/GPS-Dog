@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Index from "./pages/Index";
 import Perfil from "./pages/Perfil";
+import Map from "./pages/Map";
 
 import "./App.css";
 
@@ -68,7 +69,7 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/perfil-mascota" element={<Perfil usuario={usuario} />} />
-        <Route path="/mapa" element={<div>Mapa en construcción</div>} />
+        <Route path="/mapa" element={<Map usuario={usuario} />} />
         <Route
           path="/notificaciones"
           element={<div>Notificaciones en construcción</div>}

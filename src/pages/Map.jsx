@@ -1,15 +1,34 @@
-import React from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import React, { useState, useEffect, lazy, Suspense } from "react";
+import Layout from "../components/Layout";
 
-const MapContainer = () => {
-    return (
-        <MapContainer center={[0, 0]} zoom={2} style={{ height: "400px", width: "100%" }}>
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-        </MapContainer>
-    );
+// Importación diferida del componente del mapa
+const MapComponent = lazy(() => import("../components/MapComponent"));
+
+const Map = ({ usuario }) => {
+  return (
+    <Layout usuario={usuario}>
+      <div className="container py-4">
+        <div className="row">
+          <div className="col-12">
+            <Suspense
+              fallback={
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  style={{ height: "600px" }}
+                >
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Cargando...</span>
+                  </div>
+                </div>
+              }
+            >
+              <MapComponent />
+            </Suspense>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
 };
 
-export default MapContainer;
+export default Map;
