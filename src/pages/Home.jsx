@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 
 const Home = ({ usuario }) => {
@@ -11,6 +12,12 @@ const Home = ({ usuario }) => {
             <p className="card-text text-muted">
               Selecciona una opción del menú para comenzar.
             </p>
+            {/* Botón para ir a la página de Consejos y Recursos */}
+            <Link to="/recursos">
+              <button className="btn btn-primary mt-3">
+                Consejos y Recursos
+              </button>
+            </Link>
           </div>
         </div>
       </div>
