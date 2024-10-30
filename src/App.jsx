@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { appFirebase } from "./credenciales";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Index from "./pages/Index";
 import Perfil from "./pages/Perfil";
 import Map from "./pages/Map";
+import Tips from "./pages/Tips"; // Importa el componente de Tips
 
 import "./App.css";
 
@@ -18,7 +19,6 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Función para manejar la recarga de la página
     const handleBeforeUnload = () => {
       signOut(auth).catch((error) => {
         console.error("Error al cerrar sesión:", error);
@@ -38,7 +38,6 @@ function App() {
       setLoading(false);
     });
 
-    // Verificar si hay una sesión guardada al cargar la página
     const checkSession = () => {
       const isAuthenticated = sessionStorage.getItem("isAuthenticated");
       if (!isAuthenticated) {
@@ -62,6 +61,12 @@ function App() {
 
   return (
     <Router>
+      {usuario && (
+        <nav>
+          <Link to="/">Inicio</Link>
+          <Link to="/recursos">Consejos y Recursos</Link> {/* Enlace a "Consejos y Recursos" */}
+        </nav>
+      )}
       <Routes>
         <Route
           path="/"
@@ -78,7 +83,7 @@ function App() {
           path="/historial"
           element={<div>Historial en construcción</div>}
         />
-        <Route path="/recursos" element={<div>Recursos en construcción</div>} />
+        <Route path="/recursos" element={<Tips />} /> {/* Ruta a Tips */}
       </Routes>
     </Router>
   );
