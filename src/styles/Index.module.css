@@ -6,6 +6,7 @@
 
 .pageContainer {
   background: url('/src/assets/1.png');
+  position: relative;
 }
 
 .textContainer {
@@ -39,51 +40,68 @@
 .dogImage {
   position: absolute;
   right: 0;
-  top: 50%;
+  top: 55%;
   transform: translateY(-50%);
-  width: 45%;
+  width: 40%;
   max-width: 600px;
   height: auto;
   z-index: 0;
   border-radius: 10px;
 }
 
-/* Botones */
-.primaryButton,
-.secondaryButton {
-  position: absolute;
-  padding: 0.5rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 50px;
+.container0 {
+  margin: auto;
+}
+
+header {
+  background: linear-gradient(90deg, #4d76cde0, #e49fbb);
+  height: 55px;
+}
+
+header .container0 {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  z-index: 1;
-  gap: 10px;
+}
+.primaryButton:hover {
+  color:#bfcafd;
+  transform: scale(1.08);
+}
+.secondaryButton:hover {
+  color: #ebeefc;
+  transform: scale(1.08);
 }
 
+header nav {
+  padding: 10px 42px;
+}
 .primaryButton {
-  background-color: #0462c7;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 7px 30px;
+  border-radius: 15px;
   color: #ffffff;
-  border: none;
-  top: 70%;
-  right: 600px;
+  background: linear-gradient(90deg, #4d76cd, #ffffff88);
+  box-shadow: 2px 2px 2px rgba(81, 80, 80, 0.5);
+  transition: all 0.3s;
   text-decoration: none;
+  position: absolute;
+ 
 }
 
 .secondaryButton {
-  background-color: transparent;
-  color: #0462c7;
-  border: 2px solid #0462c7;
-  top: 40px;
-  left: 86%;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 7px 30px;
+  border-radius: 15px;
+  color: #ffffff;
+  background: linear-gradient(90deg, #fcbcd6d2,#4d76cd );
+  box-shadow: 2px 2px 2px rgba(81, 80, 80, 0.5);
+  transition: all 0.3s;
   text-decoration: none;
-}
-
-.primaryButton:hover,
-.secondaryButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  position: absolute;
+  left: 87%;
 }
 
 /* Carrusel */
@@ -94,12 +112,13 @@
   border-radius: 10px;
   margin: 2rem 0;
   position: relative;
+  left: 10%;
 }
 
 .carouselInner {
   display: flex;
   width: 110%;
-  height: 100%;
+  height: 110%;
 }
 
 .carouselItem {
@@ -133,7 +152,7 @@
 /* Posición de los indicadores */
 .carouselIndicators {
   position: absolute;
-  bottom: -40px;
+  bottom: 40px;
   left: 50%;
   transform: translateX(0);
 }
@@ -150,6 +169,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+
 }
 
 /* Media Queries para responsividad */

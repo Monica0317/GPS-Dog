@@ -9,33 +9,31 @@ const Index = () => {
   const { setRegistrando } = useContext(AuthContext);
 
   return (
-    
     <div className={`min-vh-100 min-vw-100 justify-content-center ${styles.pageContainer}`}>
-      <header className="container0">
+      <header className={`${styles.container0}`}>
         <nav>
-      <Link
-        to="/login"
-        className={`${styles.primaryButton}`}
-        onClick={() => setRegistrando(false)}
-      >
-        Crear Cuenta
-      </Link>
-      <Link
-        to="/login"
-        className={`${styles.secondaryButton}`}
-        onClick={() => setRegistrando(true)}
-      >
-        Iniciar Sesión
-      </Link>
-      </nav>
+          <Link
+            to="/login"
+            className={`${styles.primaryButton}`}
+            onClick={() => setRegistrando(false)}
+          >
+            Crear Cuenta
+          </Link>
+          <Link
+            to="/login"
+            className={`${styles.secondaryButton}`}
+            onClick={() => setRegistrando(true)}
+          >
+            Iniciar Sesión
+          </Link>
+        </nav>
       </header>
-     
 
       <div className={`${styles.contentContainer}`}>
         <img src="/src/assets/perros.png" alt="Perro" className={`${styles.dogImage}`} />
 
         {/* Logo y Título */}
-        <div className={`${styles.centerContent} `}>
+        <div className={`${styles.centerContent}`}>
           <div className={`${styles.textContainer}`}>
             <PawPrint className={`${styles.paw} display-4 fw-bold text-primary`} size={48} />
             <h1 className={`${styles.title} display-4 fw-bold text-primary`}>PawTracker</h1>
@@ -45,20 +43,37 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Carrusel con GIF */}
-        <div id="carouselExampleCaptions" className={`carousel slide ${styles.carousel}`} data-bs-ride="carousel">
+        {/* Carrusel con dos GIFs */}
+        <div id="carouselExampleIndicators" className={`carousel slide ${styles.carousel}`} data-bs-ride="carousel">
+          
+          {/* Indicadores */}
+          <div className={`carousel-indicators ${styles.carouselIndicators}`}>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+
+          </div>
+
           <div className={`carousel-inner ${styles.carouselInner}`}>
             <div className={`carousel-item active ${styles.carouselItem}`}>
-              <img src="/src/assets/gif_historial.gif" alt="GIF animado" className={`${styles.gifImage}`} />
+              <img src="/src/assets/gif_historial.gif" alt="GIF historial" className={`${styles.gifImage}`} />
+            </div>
+            <div className={`carousel-item ${styles.carouselItem}`}>
+              <img src="/src/assets/gif_rastreo.gif" alt="GIF zona segura" className={`${styles.gifImage}`} />
+            </div>
+            <div className={`carousel-item ${styles.carouselItem}`}>
+              <img src="/src/assets/gif_zona.gif" alt="GIF zona segura" className={`${styles.gifImage}`} />
             </div>
           </div>
-          <button className={`carousel-control-prev ${styles.carouselControlPrev}`} type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+
+          {/* Controles de navegación */}
+          <button className={`carousel-control-prev ${styles.carouselControlPrev}`} type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
             <span className={`carousel-control-prev-icon ${styles.carouselControlPrevIcon}`} aria-hidden="true"></span>
-            <span className={`visually-hidden ${styles.visuallyHidden}`}></span>
+            <span className="visually-hidden">Previous</span>
           </button>
-          <button className={`carousel-control-next ${styles.carouselControlNext}`} type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <button className={`carousel-control-next ${styles.carouselControlNext}`} type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
             <span className={`carousel-control-next-icon ${styles.carouselControlNextIcon}`} aria-hidden="true"></span>
-            <span className={`visually-hidden ${styles.visuallyHidden}`}></span>
+            <span className="visually-hidden">Next</span>
           </button>
         </div>
       </div>
