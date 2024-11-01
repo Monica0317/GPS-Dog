@@ -35,8 +35,8 @@ const Index = () => {
         {/* Logo y Título */}
         <div className={`${styles.centerContent}`}>
           <div className={`${styles.textContainer}`}>
-            <PawPrint className={`${styles.paw} display-4 fw-bold text-primary`} size={48} />
-            <h1 className={`${styles.title} display-4 fw-bold text-primary`}>PawTracker</h1>
+            <PawPrint className={`${styles.paw} display-4 fw-bold `} size={48} />
+            <h1 className={`${styles.title} display-3 fw-bold `}>PawTracker</h1>
             <p className={`${styles.subtitle}`}>
               Mantén a tu mejor amigo seguro y localizado en todo momento
             </p>
@@ -69,11 +69,11 @@ const Index = () => {
           {/* Controles de navegación */}
           <button className={`carousel-control-prev ${styles.carouselControlPrev}`} type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
             <span className={`carousel-control-prev-icon ${styles.carouselControlPrevIcon}`} aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
+            <span className="visually-hidden"></span>
           </button>
           <button className={`carousel-control-next ${styles.carouselControlNext}`} type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
             <span className={`carousel-control-next-icon ${styles.carouselControlNextIcon}`} aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
+            <span className="visually-hidden"></span>
           </button>
         </div>
       </div>
