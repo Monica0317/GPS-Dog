@@ -80,8 +80,8 @@ const Login = () => {
                     Iniciar Sesión
                   </button>
                 </form>
-                <h5 className={`texto ${styles.text}`}>
-                  ¿No tienes cuenta?
+                <h5 className={` ${styles.text}`}>
+                  ¿No tienes cuenta?{' '}
                   <button
                     type="button"
                     className={` ${styles.switchButton}`}
