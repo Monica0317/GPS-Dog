@@ -19,7 +19,7 @@ L.Icon.Default.mergeOptions({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
-const API_URL = "http://192.168.1.3:3001";
+const API_URL = "https://api-paw-tracker.onrender.com";
 
 const DynamicMap = () => {
   const [position, setPosition] = useState(null);
@@ -32,7 +32,7 @@ const DynamicMap = () => {
     // Obtener posición inicial
     const getInitialPosition = async () => {
       try {
-        const response = await fetch(`${API_URL}/get-location`);
+        const response = await fetch(`${API_URL}`);
         if (!response.ok)
           throw new Error("Error al obtener la ubicación inicial");
 
@@ -58,7 +58,7 @@ const DynamicMap = () => {
 
     const fetchLocation = async () => {
       try {
-        const response = await fetch(`${API_URL}/get-location`);
+        const response = await fetch(`${API_URL}`);
         if (!response.ok) throw new Error("Error al obtener la ubicación");
 
         const locationData = await response.json();
