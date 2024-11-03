@@ -12,6 +12,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
+    "dynamic": "^4.2.2",
     "firebase": "^11.0.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.453.0",
