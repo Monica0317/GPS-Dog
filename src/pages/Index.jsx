@@ -13,7 +13,7 @@ const Index = () => {
       <header className={`${styles.container0}`}>
         <nav>
           <Link
-            to="/login"
+            to="/signUp"
             className={`${styles.primaryButton}`}
             onClick={() => setRegistrando(false)}
           >

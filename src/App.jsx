@@ -4,6 +4,7 @@ import { appFirebase } from "./credenciales";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Index from "./pages/Index";
 import Perfil from "./pages/Perfil";
@@ -73,6 +74,7 @@ function App() {
           element={usuario ? <Home usuario={usuario} /> : <Index />}
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/SignUp" element={<SignUp/>} />
         <Route path="/perfil-mascota" element={<Perfil usuario={usuario} />} />
         <Route path="/mapa" element={<Map usuario={usuario} />} />
         <Route

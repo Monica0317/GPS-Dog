@@ -1,7 +1,6 @@
 :root {
   --primary-color: #0462c7;
   --background-blue: #4AA4F7;
-  --color: #000000;
 }
 
 .pageContainer {
@@ -20,7 +19,6 @@
 
 .title {
   font-size: clamp(2.5rem, 5vw, 3.5rem);
-  color: var(--color);
   margin-bottom: 1rem;
   display: flex;
   align-items: center;

@@ -1,0 +1,11 @@
+.pageContainer{
+    background-color: aliceblue;
+}
+.padre{
+    background-color: rgba(176, 176, 176, 0.303);
+    position: relative;
+    top: 10%;
+    height: 90%; /* Ajusta según sea necesario */
+    width: 200%; /* Ajusta según sea necesario */
+    max-width: 900px; /* Limita el ancho máximo para que no sea excesivo */
+    margin: 20px;}
