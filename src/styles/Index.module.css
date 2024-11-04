@@ -1,10 +1,10 @@
 :root {
   --primary-color: #0462c7;
-  --background-blue: #4AA4F7;
+  --background-blue: #4aa4f7;
 }
 
 .pageContainer {
-  background: url('/src/assets/1.png');
+  background: url("/src/assets/1.png");
   position: relative;
 }
 
@@ -20,40 +20,35 @@
 .title {
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   margin-bottom: 1rem;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  text-align: left; 
-  font-family: Arial; 
-  font-weight: bold; 
+  text-align: left;
+  font-family: Arial;
+  font-weight: bold;
   color: rgb(103, 67, 204);
-  text-shadow: 0 1px 0 #dddddd, 
-  1px 2px 0 #ccc,
-  2px 3px 0 #bbb,
-  3px 4px 0 #aaa,
-  0 6px 1px rgba(0,0,0,0.1), 
-  0 0 5px rgba(0,0,0,0.1),
-  0 1px 3px rgba(0,0,0,0.3),
-  0 3px 5px rgba(0,0,0,0.2), 
-  0 5px 10px rgba(0,0,0,0.25),
-  0 10px 10px rgba(0,0,0,0.2),
-  0 20px 20px rgba(0,0,0,0.15);
-  
+  text-shadow: 0 1px 0 #dddddd, 1px 2px 0 #ccc, 2px 3px 0 #bbb, 3px 4px 0 #aaa,
+    0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
+    0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2),
+    0 20px 20px rgba(0, 0, 0, 0.15);
 }
-.paw{
+.paw {
   position: relative;
   color: rgb(103, 67, 204);
   left: 13%;
+  margin-top: 1rem;
 }
 
 .subtitle {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: var(--white);
+  font-size: clamp(1.5rem, 2vw, 1.2rem);
+  color: white;
+  font-weight: bold;
   max-width: 80%;
   margin-bottom: 2rem;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
-
 
 .dogImage {
   position: absolute;
@@ -83,7 +78,7 @@ header .container0 {
   text-align: center;
 }
 .primaryButton:hover {
-  color:#ebeefc;
+  color: #ebeefc;
   transform: scale(1.08);
 }
 .secondaryButton:hover {
@@ -107,7 +102,6 @@ header nav {
   transition: all 0.3s;
   text-decoration: none;
   position: absolute;
- 
 }
 
 .secondaryButton {
@@ -116,7 +110,7 @@ header nav {
   padding: 7px 30px;
   border-radius: 15px;
   color: #ffffff;
-  background: linear-gradient(90deg, #fcbcd6d2,#4d76cd );
+  background: linear-gradient(90deg, #fcbcd6d2, #4d76cd);
   box-shadow: 3px 3px 3px rgba(81, 80, 80, 0.5);
   transition: all 0.3s;
   text-decoration: none;
@@ -133,7 +127,7 @@ header nav {
   margin: 2rem 0;
   position: relative;
   left: 10%;
-  top: -30px;
+  top: 50px;
 }
 
 .carouselInner {
@@ -191,7 +185,6 @@ header nav {
   width: 100%;
   height: 100%;
   object-fit: cover;
-
 }
 
 /* Media Queries para responsividad */
