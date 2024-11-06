@@ -1,56 +1,46 @@
-.historial-container {
-  max-width: 600px;
-  margin: 20px auto;
+/* Archivo: Tips.css */
+
+html, body {
+  background-color: #fff8cc !important; /* Fondo amarillo suave para toda la página */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.tips-container {
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #ffffff; /* Fondo blanco para el contenedor */
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.historial-title {
+.tips-title {
+  font-size: 2em;
   text-align: center;
-  font-size: 24px;
   color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
-.recorrido-card {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin: 10px 0;
-  padding: 15px;
-  transition: box-shadow 0.3s;
-}
-
-.recorrido-card:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-.recorrido-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.recorrido-fecha {
-  font-size: 18px;
-  color: #555;
-}
-
-.recorrido-notas,
-.recorrido-alertas {
-  font-size: 14px;
-  color: #777;
-}
-
-.recorrido-list {
+.tips-list {
   list-style: none;
   padding: 0;
+  line-height: 1.6;
 }
 
-.recorrido-item {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #eee;
+.tips-item {
+  font-size: 1.1em;
+  color: #555;
+  background-color: #ffffff; /* Fondo blanco para los elementos de la lista */
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-left: 4px solid #007acc;
   border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.tips-item:hover {
+  background-color: #f0f0f0; /* Color gris claro al pasar el cursor */
 }
