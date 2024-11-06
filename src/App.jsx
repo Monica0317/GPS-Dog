@@ -4,12 +4,12 @@ import { appFirebase } from "./credenciales";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Index from "./pages/Index";
 import Perfil from "./pages/Perfil";
 import Map from "./pages/Map";
 import Tips from "./pages/Tips"; // Importa el componente de Tips
+import HistorialRecorridos from "./pages/HistorialRecorridos"; // Importa el componente de Historial de Recorridos
 
 import "./App.css";
 
@@ -62,30 +62,63 @@ function App() {
 
   return (
     <Router>
-      {usuario && (
-        <nav>
-          <Link to="/">Inicio</Link>
-          <Link to="/recursos">Consejos y Recursos</Link> {/* Enlace a "Consejos y Recursos" */}
-        </nav>
-      )}
       <Routes>
         <Route
           path="/"
-          element={usuario ? <Home usuario={usuario} /> : <Index />}
+          element={
+            usuario ? (
+              <>
+                <nav>
+                  <Link to="/">Inicio</Link>
+                </nav>
+                <Home usuario={usuario} />
+              </>
+            ) : (
+              <Index />
+            )
+          }
         />
         <Route path="/login" element={<Login />} />
-        <Route path="/SignUp" element={<SignUp/>} />
-        <Route path="/perfil-mascota" element={<Perfil usuario={usuario} />} />
-        <Route path="/mapa" element={<Map usuario={usuario} />} />
         <Route
-          path="/notificaciones"
-          element={<div>Notificaciones en construcción</div>}
+          path="/perfil-mascota"
+          element={
+            <>
+              <Perfil usuario={usuario} />
+            </>
+          }
+        />
+        <Route
+          path="/mapa"
+          element={
+            <>
+              <Map usuario={usuario} />
+            </>
+          }
+        />
+        <Route
+          path="/recursos"
+          element={
+            <>
+              <nav>
+                <Link to="/">Inicio</Link>
+                <Link to="/recursos">Consejos y Recursos</Link>
+              </nav>
+              <Tips />
+            </>
+          }
         />
         <Route
           path="/historial"
-          element={<div>Historial en construcción</div>}
+          element={
+            <>
+              <nav>
+                <Link to="/">Inicio</Link>
+                <Link to="/historial">Historial de Recorridos</Link>
+              </nav>
+              <HistorialRecorridos />
+            </>
+          }
         />
-        <Route path="/recursos" element={<Tips />} /> {/* Ruta a Tips */}
       </Routes>
     </Router>
   );
