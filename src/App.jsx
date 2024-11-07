@@ -4,12 +4,12 @@ import { auth } from "./credenciales";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Index from "./pages/Index";
 import Perfil from "./pages/Perfil";
 import Map from "./pages/Map";
 import Tips from "./pages/Tips";
+import HistorialRecorridos from "./pages/HistorialRecorridos";
 
 import "./App.css";
 
@@ -61,34 +61,63 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        {usuario && (
-          <nav>
-            <Link to="/">Inicio</Link>
-            <Link to="/recursos">Consejos y Recursos</Link>{" "}
-            {/* Enlace a "Consejos y Recursos" */}
-          </nav>
-        )}
         <Routes>
           <Route
             path="/"
-            element={usuario ? <Home usuario={usuario} /> : <Index />}
+            element={
+              usuario ? (
+                <>
+                  <nav>
+                    <Link to="/">Inicio</Link>
+                  </nav>
+                  <Home usuario={usuario} />
+                </>
+              ) : (
+                <Index />
+              )
+            }
           />
           <Route path="/login" element={<Login />} />
-          <Route path="/SignUp" element={<SignUp />} />
           <Route
             path="/perfil-mascota"
-            element={<Perfil usuario={usuario} />}
+            element={
+              <>
+                <Perfil usuario={usuario} />
+              </>
+            }
           />
-          <Route path="/mapa" element={<Map usuario={usuario} />} />
           <Route
-            path="/notificaciones"
-            element={<div>Notificaciones en construcción</div>}
+            path="/mapa"
+            element={
+              <>
+                <Map usuario={usuario} />
+              </>
+            }
+          />
+          <Route
+            path="/recursos"
+            element={
+              <>
+                <nav>
+                  <Link to="/">Inicio</Link>
+                  <Link to="/recursos">Consejos y Recursos</Link>
+                </nav>
+                <Tips />
+              </>
+            }
           />
           <Route
             path="/historial"
-            element={<div>Historial en construcción</div>}
+            element={
+              <>
+                <nav>
+                  <Link to="/">Inicio</Link>
+                  <Link to="/historial">Historial de Recorridos</Link>
+                </nav>
+                <HistorialRecorridos />
+              </>
+            }
           />
-          <Route path="/recursos" element={<Tips />} />
         </Routes>
       </Router>
     </AuthProvider>
