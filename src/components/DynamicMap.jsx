@@ -8,6 +8,8 @@ import {
   useMap,
 } from "react-leaflet";
 import L from "leaflet";
+import { ref, onValue } from "firebase/database";
+import { database } from "../credenciales";
 
 // Configuración de íconos personalizados
 const createCustomIcon = (iconUrl, iconSize = [25, 41]) => {
@@ -32,7 +34,6 @@ const currentIcon = createCustomIcon(
   "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png"
 );
 
-// Componente para centrar automáticamente el mapa
 const AutoCenter = ({ position }) => {
   const map = useMap();
   useEffect(() => {
@@ -43,7 +44,7 @@ const AutoCenter = ({ position }) => {
   return null;
 };
 
-const DynamicMap = () => {
+const DynamicMap = ({ userId }) => {
   const [position, setPosition] = useState(null);
   const [pathHistory, setPathHistory] = useState([]);
   const [error, setError] = useState(null);
@@ -54,11 +55,8 @@ const DynamicMap = () => {
     averageSpeed: 0,
   });
 
-  const API_URL = "https://api-paw-tracker.onrender.com";
-
-  // Función para calcular la distancia entre dos puntos en metros
   const calculateDistance = (coord1, coord2) => {
-    const R = 6371e3; // Radio de la tierra en metros
+    const R = 6371e3;
     const φ1 = (coord1[0] * Math.PI) / 180;
     const φ2 = (coord2[0] * Math.PI) / 180;
     const Δφ = ((coord2[0] - coord1[0]) * Math.PI) / 180;
@@ -73,115 +71,43 @@ const DynamicMap = () => {
   };
 
   useEffect(() => {
-    const getInitialPosition = async () => {
-      try {
-        console.log("Intentando obtener posición inicial desde:", API_URL);
+    const userRef = ref(database, `users/${userId}/location`);
 
-        const response = await fetch(API_URL);
-        console.log("Respuesta recibida:", response);
-
-        if (!response.ok) {
-          throw new Error(`Error HTTP: ${response.status}`);
-        }
-
-        const locationData = await response.json();
-        console.log("Datos de ubicación recibidos:", locationData);
-
-        // Verificación detallada de los datos
-        if (!locationData) {
-          console.error("No se recibieron datos de ubicación");
-          throw new Error("No se recibieron datos de ubicación");
-        }
-
-        console.log("Latitude:", locationData.latitude);
-        console.log("Longitude:", locationData.longitude);
-
-        if (
-          locationData.latitude === undefined ||
-          locationData.longitude === undefined
-        ) {
-          console.error("Datos de ubicación incompletos:", locationData);
-          throw new Error("Datos de ubicación incompletos");
-        }
-
-        setPosition([locationData.latitude, locationData.longitude]);
-        console.log("Posición establecida:", [
-          locationData.latitude,
-          locationData.longitude,
-        ]);
-      } catch (err) {
-        console.error("Error completo:", err);
-        // Establecer posición por defecto en caso de error
-        const defaultPosition = [4.60971, -74.08175];
-        console.log("Estableciendo posición por defecto:", defaultPosition);
-        setPosition(defaultPosition);
-        setError("Error al obtener la ubicación inicial: " + err.message);
-      }
-    };
-    getInitialPosition();
-  }, []);
-
-  useEffect(() => {
-    if (!isTracking) return;
-
-    const fetchLocation = async () => {
-      try {
-        console.log("Obteniendo nueva ubicación...");
-
-        const response = await fetch(API_URL);
-        console.log("Respuesta de actualización:", response);
-
-        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-
-        const locationData = await response.json();
-        console.log("Nuevos datos de ubicación:", locationData);
-
-        if (
-          !locationData ||
-          locationData.latitude === undefined ||
-          locationData.longitude === undefined
-        ) {
-          throw new Error("Datos de ubicación inválidos");
-        }
-
+    // Escucha de cambios en la ubicación del usuario logueado
+    onValue(userRef, (snapshot) => {
+      const locationData = snapshot.val();
+      if (locationData && locationData.latitude && locationData.longitude) {
         const newPosition = [locationData.latitude, locationData.longitude];
-        console.log("Nueva posición:", newPosition);
-
         setPosition(newPosition);
 
         setPathHistory((prev) => {
           if (prev.length > 0) {
             const lastPoint = prev[prev.length - 1];
-            // Comparación directa de coordenadas
             if (
-              lastPoint.latitude === newPosition.latitude &&
-              lastPoint.longitude === newPosition.longitude
+              lastPoint.latitude === newPosition[0] &&
+              lastPoint.longitude === newPosition[1]
             ) {
-              console.log("Punto duplicado, ignorando...");
               return prev;
             }
 
             const distance = calculateDistance(
               [lastPoint.latitude, lastPoint.longitude],
-              [newPosition.latitude, newPosition.longitude]
+              newPosition
             );
 
-            // Actualización de las estadísticas
             const timestamp = new Date(locationData.timestamp || Date.now());
             const startTime =
               prev.length === 1 ? timestamp : new Date(prev[0].timestamp);
             const duration = (timestamp - startTime) / 1000;
 
-            setStats((prevStats) => {
-              return {
-                distance: prevStats.distance + distance,
-                duration,
-                averageSpeed:
-                  duration > 0
-                    ? ((prevStats.distance + distance) / duration) * 3.6
-                    : 0,
-              };
-            });
+            setStats((prevStats) => ({
+              distance: prevStats.distance + distance,
+              duration,
+              averageSpeed:
+                duration > 0
+                  ? ((prevStats.distance + distance) / duration) * 3.6
+                  : 0,
+            }));
           }
 
           return [
@@ -193,21 +119,13 @@ const DynamicMap = () => {
             },
           ];
         });
-      } catch (err) {
-        console.error("Error al actualizar ubicación:", err);
-        setError("Error al obtener la ubicación: " + err.message);
+      } else {
+        setError(
+          "No se encontraron datos de ubicación válidos para el usuario."
+        );
       }
-    };
-
-    console.log("Iniciando seguimiento...");
-    const interval = setInterval(fetchLocation, 5000);
-    fetchLocation(); // Primera llamada inmediata
-
-    return () => {
-      console.log("Deteniendo seguimiento...");
-      clearInterval(interval);
-    };
-  }, [isTracking]);
+    });
+  }, [userId]);
 
   if (!position) {
     return (
@@ -305,7 +223,6 @@ const DynamicMap = () => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
 
-          {/* Marcador de posición actual */}
           <Marker position={position} icon={currentIcon}>
             <Popup>
               Ubicación actual
@@ -316,7 +233,6 @@ const DynamicMap = () => {
             </Popup>
           </Marker>
 
-          {/* Marcadores de inicio y fin del recorrido */}
           {pathHistory.length > 0 && (
             <>
               <Marker
@@ -339,7 +255,6 @@ const DynamicMap = () => {
             </>
           )}
 
-          {/* Línea del recorrido */}
           {pathHistory.length > 1 && (
             <Polyline
               positions={pathHistory.map((point) => [
