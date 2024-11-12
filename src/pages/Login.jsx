@@ -55,6 +55,7 @@ const Login = () => {
               <div className={`${styles.card}`}>
                 <form onSubmit={handleLogin} className={styles.form}> 
                   <div className={`display-4  fw-bold ${styles.titulo}`}>Login</div>
+                  
                   <div className={styles.inputGroup}>
                   <i className="fas fa-envelope"></i>
                     <input

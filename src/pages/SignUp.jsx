@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
-import Imagen from "../assets/perrito1.png";
+import Imagen from "../assets/perro00.png";
 import styles from "../styles/SignUp.module.css";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthContext";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { appFirebase, database } from "../credenciales";
@@ -11,7 +10,6 @@ const auth = getAuth(appFirebase);
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { setRegistrando } = useContext(AuthContext);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -59,11 +57,6 @@ const SignUp = () => {
     }
   };
 
-  const handleNavigateToLogin = () => {
-    setRegistrando(true);
-    navigate('/login');
-  };
-
   return (
     <div className={`min-vh-100 min-vw-100 justify-content-center ${styles.pageContainer}`}>
       <div className={`container ${styles.container}`}>
@@ -72,48 +65,55 @@ const SignUp = () => {
             <div className={`padre ${styles.padre}`}>
               <div className={`${styles.card}`}>
                 <form onSubmit={handleSignUp} className={styles.form}>
-                  <input
-                    type="text"
-                    placeholder="Ingresar Usuario"
-                    className={`cajatexto ${styles.input}`}
-                    id="user"
-                    required
-                  />
-                  <input
-                    type="email"
-                    placeholder="Ingresar Email"
-                    className={`cajatexto ${styles.input}`}
-                    id="email"
-                    required
-                  />
-                  <input
-                    type="password"
-                    placeholder="Ingresar Contraseña"
-                    className={`cajatexto ${styles.input}`}
-                    id="password"
-                    required
-                  />
-                  <input
-                    type="password"
-                    placeholder="Confirmar Contraseña"
-                    className={`cajatexto ${styles.input}`}
-                    id="confirmPassword"
-                    required
-                  />
-                  <button type="submit" className={`btnform ${styles.button}`}>
+                  <div className={`display-4 fw-bold ${styles.titulo}`}>Sign Up</div>
+                  
+                  <div className={styles.inputGroup}>
+                    <i className="fas fa-user"></i>
+                    <input
+                      type="text"
+                      placeholder="Ingresar Usuario"
+                      className={`${styles.input}`}
+                      id="user"
+                      required
+                    />
+                  </div>
+
+                  <div className={styles.inputGroup}>
+                    <i className="fas fa-envelope"></i>
+                    <input
+                      type="email"
+                      placeholder="Ingresar Email"
+                      className={`${styles.input}`}
+                      id="email"
+                      required
+                    />
+                  </div>
+
+                  <div className={styles.inputGroup}>
+                    <i className="fas fa-lock"></i>
+                    <input
+                      type="password"
+                      placeholder="Ingresar Contraseña"
+                      className={`${styles.input}`}
+                      id="password"
+                      required
+                    />
+                  </div>
+
+                  <div className={styles.inputGroup}>
+                    <i className="fas fa-key"></i>
+                    <input
+                      type="password"
+                      placeholder="Confirmar Contraseña"
+                      className={`${styles.input}`}
+                      id="confirmPassword"
+                      required
+                    />
+                  </div>
+                  <button type="submit" className={`${styles.button}`}>
                     Registrarse
                   </button>
                 </form>
-                <h5 className={`texto ${styles.text}`}>
-                  Si ya tienes cuenta
-                  <button
-                    type="button"
-                    className={`btnswitch ${styles.switchButton}`}
-                    onClick={handleNavigateToLogin}
-                  >
-                    Inicia sesión
-                  </button>
-                </h5>
               </div>
             </div>
           </div>
