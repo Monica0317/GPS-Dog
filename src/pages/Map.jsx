@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import Layout from "../components/Layout";
 import { lazy } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const MapComponent = lazy(() => import("../components/MapComponent"));
 
@@ -16,13 +17,19 @@ const LoadingSpinner = () => (
 );
 
 const Map = ({ usuario }) => {
+  const { currentUser } = useAuth();
+
   return (
     <Layout usuario={usuario}>
       <div className="container py-4">
         <div className="row">
           <div className="col-12">
             <Suspense fallback={<LoadingSpinner />}>
-              <MapComponent />
+              {currentUser ? (
+                <MapComponent userId={currentUser.uid} />
+              ) : (
+                <LoadingSpinner />
+              )}
             </Suspense>
           </div>
         </div>

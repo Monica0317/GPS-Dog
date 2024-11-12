@@ -43,11 +43,13 @@ const Login = () => {
 
   const handleNavigateToSignUp = () => {
     setRegistrando(false);
-    navigate('/signup');
+    navigate("/signup");
   };
 
   return (
-    <div className={`min-vh-100 min-vw-100 justify-content-center ${styles.pageContainer}`}>
+    <div
+      className={`min-vh-100 min-vw-100 justify-content-center ${styles.pageContainer}`}
+    >
       <div className={`container ${styles.container}`}>
         <div className={`row ${styles.row}`}>
           <div className={`col-md-4 ${styles.column}`}>
@@ -57,7 +59,7 @@ const Login = () => {
                   <div className={`display-4  fw-bold ${styles.titulo}`}>Login</div>
                   
                   <div className={styles.inputGroup}>
-                  <i className="fas fa-envelope"></i>
+                    <i className="fas fa-envelope"></i>
                     <input
                       type="email"
                       placeholder="Ingresar Email"
@@ -77,12 +79,11 @@ const Login = () => {
                     />
                   </div>
                   <button type="submit" className={`${styles.button}`}>
-              
                     Iniciar Sesión
                   </button>
                 </form>
                 <h5 className={` ${styles.text}`}>
-                  ¿No tienes cuenta?{' '}
+                  ¿No tienes cuenta?{" "}
                   <button
                     type="button"
                     className={` ${styles.switchButton}`}
