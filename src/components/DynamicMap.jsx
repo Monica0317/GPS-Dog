@@ -8,8 +8,49 @@ import {
   useMap,
 } from "react-leaflet";
 import L from "leaflet";
-import { ref, onValue } from "firebase/database";
-import { database } from "../credenciales";
+import {
+  getDatabase,
+  ref,
+  get,
+  query,
+  orderByChild,
+  equalTo,
+  onValue,
+} from "firebase/database";
+import { appFirebase } from "../credenciales";
+
+const db = getDatabase(appFirebase);
+
+const getLocationHistory = async (userId, selectedDate) => {
+  try {
+    if (!userId || !selectedDate) {
+      console.warn("ID de usuario o fecha no proporcionados.");
+      return [];
+    }
+
+    const db = getDatabase(appFirebase);
+    const userLocationRef = ref(
+      db,
+      `users/${userId}/locations/${selectedDate}`
+    );
+    const snapshot = await get(userLocationRef);
+
+    if (snapshot.exists()) {
+      const locations = Object.values(snapshot.val());
+      return locations.map((loc) => ({
+        latitude: loc.latitude,
+        longitude: loc.longitude,
+        timestamp: loc.timestamp,
+      }));
+    } else {
+      console.warn("No se encontraron datos para la fecha seleccionada.");
+      return [];
+    }
+  } catch (error) {
+    console.error("Error al obtener el historial de ubicaciones:", error);
+    return [];
+  }
+};
 
 // Configuración de íconos personalizados
 const createCustomIcon = (iconUrl, iconSize = [25, 41]) => {
@@ -71,63 +112,70 @@ const DynamicMap = ({ userId }) => {
   };
 
   useEffect(() => {
-    const userRef = ref(database, `users/${userId}/location`);
+    const userRef = ref(db, `users/${userId}/locations`);
 
-    // Escucha de cambios en la ubicación del usuario logueado
-    onValue(userRef, (snapshot) => {
+    const unsubscribe = onValue(userRef, (snapshot) => {
       const locationData = snapshot.val();
-      if (locationData && locationData.latitude && locationData.longitude) {
-        const newPosition = [locationData.latitude, locationData.longitude];
-        setPosition(newPosition);
 
-        setPathHistory((prev) => {
-          if (prev.length > 0) {
-            const lastPoint = prev[prev.length - 1];
-            if (
-              lastPoint.latitude === newPosition[0] &&
-              lastPoint.longitude === newPosition[1]
-            ) {
-              return prev;
-            }
+      console.log("Estructura completa del nodo `locations`:", locationData);
 
-            const distance = calculateDistance(
-              [lastPoint.latitude, lastPoint.longitude],
-              newPosition
-            );
-
-            const timestamp = new Date(locationData.timestamp || Date.now());
-            const startTime =
-              prev.length === 1 ? timestamp : new Date(prev[0].timestamp);
-            const duration = (timestamp - startTime) / 1000;
-
-            setStats((prevStats) => ({
-              distance: prevStats.distance + distance,
-              duration,
-              averageSpeed:
-                duration > 0
-                  ? ((prevStats.distance + distance) / duration) * 3.6
-                  : 0,
-            }));
-          }
-
-          return [
-            ...prev,
-            {
-              latitude: newPosition[0],
-              longitude: newPosition[1],
-              timestamp: locationData.timestamp || new Date().toISOString(),
-            },
-          ];
+      if (locationData) {
+        const locationArray = Object.keys(locationData).flatMap((dateKey) => {
+          const dateGroup = locationData[dateKey];
+          return Object.keys(dateGroup)
+            .map((entryKey) => {
+              const entry = dateGroup[entryKey];
+              if (
+                entry &&
+                typeof entry.latitude === "number" &&
+                typeof entry.longitude === "number" &&
+                entry.timestamp
+              ) {
+                return {
+                  latitude: entry.latitude,
+                  longitude: entry.longitude,
+                  timestamp: entry.timestamp,
+                };
+              }
+              return null;
+            })
+            .filter(Boolean);
         });
-      } else {
-        setError(
-          "No se encontraron datos de ubicación válidos para el usuario."
+
+        console.log("Array de ubicaciones procesadas:", locationArray);
+
+        if (locationArray.length === 0) {
+          console.warn(
+            "No se encontraron ubicaciones válidas en el nodo `locations`."
+          );
+          setError("No se encontraron ubicaciones válidas.");
+          return;
+        }
+
+        // Ordenar por timestamp y tomar la última ubicación
+        locationArray.sort(
+          (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
         );
+
+        const lastLocation = locationArray[locationArray.length - 1];
+
+        if (lastLocation) {
+          setPosition([lastLocation.latitude, lastLocation.longitude]);
+          setPathHistory(locationArray);
+        } else {
+          console.error("Última ubicación inválida:", lastLocation);
+          setError("Última ubicación inválida.");
+        }
+      } else {
+        console.error("No se encontraron datos en el nodo `locations`.");
+        setError("No se encontraron datos en el nodo `locations`.");
       }
     });
+
+    return () => unsubscribe();
   }, [userId]);
 
-  if (!position) {
+  if (!position || position.length !== 2 || position.includes(null)) {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
@@ -227,9 +275,9 @@ const DynamicMap = ({ userId }) => {
             <Popup>
               Ubicación actual
               <br />
-              Lat: {position[0].toFixed(6)}
+              Lat: {position && position[0] ? position[0].toFixed(6) : "N/A"}
               <br />
-              Lon: {position[1].toFixed(6)}
+              Lon: {position && position[1] ? position[1].toFixed(6) : "N/A"}
             </Popup>
           </Marker>
 
@@ -275,3 +323,4 @@ const DynamicMap = ({ userId }) => {
 };
 
 export default DynamicMap;
+export { getLocationHistory };
