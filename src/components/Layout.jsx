@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import styles from "../styles/Sidebar.module.css";
 import { Menu, X } from "lucide-react";
-import Imagen from "../assets/perrito1.png";
-
 const Layout = ({ usuario, children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
     <div className= {`d-flex min-vh-100 ${styles.container}`}>
-      <img src={Imagen} alt="" className={`${styles.image}`} />
       {/* Botón para móvil */}
       <button
      

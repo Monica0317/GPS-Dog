@@ -2,12 +2,13 @@ import React, { Suspense } from "react";
 import Layout from "../components/Layout";
 import { lazy } from "react";
 import { useAuth } from "../context/AuthContext";
+import styles from "../styles/Home.module.css"; 
 
 const MapComponent = lazy(() => import("../components/MapComponent"));
 
 const LoadingSpinner = () => (
   <div
-    className="d-flex justify-content-center align-items-center"
+    className= {`d-flex justify-content-center align-items-center${styles.map}`}
     style={{ height: "600px" }}
   >
     <div className="spinner-border text-primary" role="status">

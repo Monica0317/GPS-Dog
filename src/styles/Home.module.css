@@ -1,8 +1,4 @@
-.container{
-    background: #ba69f0;
-    box-shadow: 4px 4px 4px   rgba(81, 80, 80, 0.5);
 
-}
 .cardBody{
     background: linear-gradient(90deg, #9a4dcd, #cf87ff);
     
@@ -32,4 +28,7 @@
     margin-bottom: 2rem;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.973);
 }
-
+.map {
+    z-index: 1
+  }
+  

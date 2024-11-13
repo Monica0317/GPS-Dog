@@ -48,8 +48,11 @@ const Sidebar = ({ usuario, isSidebarOpen }) => {
   };
 
   return (
+    
     <div
-      className={` border-end d-flex flex-column position-fixed start-0 top-0 bottom-0 d-lg-flex ${isSidebarOpen ? "show" : "hidden"} ${styles.sidebar}`}
+      className={`bg-light border-end d-flex flex-column
+      position-fixed start-0 top-0 bottom-0
+      ${isSidebarOpen ? "show" : "hidden"}} ${styles.sidebar}`}
       
       style={{
         width: "280px",
@@ -71,7 +74,7 @@ const Sidebar = ({ usuario, isSidebarOpen }) => {
           {menuItems.map((item) => (
             <button
               key={item.path}
-              className={`list-group-item border-0 d-flex align-items-center gap-3 py-3 ${location.pathname === item.path ? "active" : ""} ${styles.menuItem}`}
+              className={`list-group-item list-group-item-action border-0 d-flex align-items-center gap-3 py-3  ${location.pathname === item.path ? "active" : ""} ${styles.menuItem}`}
               onClick={() => navigate(item.path)}
             >
               {item.icon}
