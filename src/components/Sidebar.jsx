@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Map, Bell, History, Book, LogOut, PawPrint } from "lucide-react";
+import styles from "../styles/Sidebar.module.css";
 import { getAuth, signOut } from "firebase/auth";
 
 const Sidebar = ({ usuario, isSidebarOpen }) => {
@@ -48,12 +49,8 @@ const Sidebar = ({ usuario, isSidebarOpen }) => {
 
   return (
     <div
-      className={`
-      bg-light border-end d-flex flex-column
-      position-fixed start-0 top-0 bottom-0
-      ${isSidebarOpen ? "show" : "hidden"}
-      d-lg-flex
-    `}
+      className={` border-end d-flex flex-column position-fixed start-0 top-0 bottom-0 d-lg-flex ${isSidebarOpen ? "show" : "hidden"} ${styles.sidebar}`}
+      
       style={{
         width: "280px",
         zIndex: 1040,
@@ -61,34 +58,34 @@ const Sidebar = ({ usuario, isSidebarOpen }) => {
         transition: "transform 0.3s ease-in-out",
       }}
     >
+      
       {/* Perfil */}
-      <div className="p-4 border-bottom">
-        <h5 className="mb-1">{usuario.displayName || usuario.email}</h5>
-        <small className="text-muted">{usuario.email}</small>
+      <div className={`p-4 border-bottom ${styles.profile}`}>
+        <h5 className={`mb-1 ${styles.displayName}`}>{usuario.displayName || usuario.email}</h5>
+        <small className={` ${styles.email}`}>{usuario.email}</small>
       </div>
 
       {/* Menú de navegación */}
-      <nav className="flex-grow-1 p-3">
-        <div className="list-group list-group-flush">
+      <nav className={`flex-grow-1 p-3 ${styles.navMenu}`}>
+        <div className={`list-group  ${styles.menuList}`}>
           {menuItems.map((item) => (
             <button
               key={item.path}
-              className={`list-group-item list-group-item-action border-0 d-flex align-items-center gap-3 py-3 
-                ${location.pathname === item.path ? "active" : ""}`}
+              className={`list-group-item border-0 d-flex align-items-center gap-3 py-3 ${location.pathname === item.path ? "active" : ""} ${styles.menuItem}`}
               onClick={() => navigate(item.path)}
             >
               {item.icon}
-              <span>{item.title}</span>
+              <span className={styles.menuText}>{item.title}</span>
             </button>
           ))}
         </div>
       </nav>
 
       {/* Botón de cerrar sesión */}
-      <div className="p-3 border-top mt-auto">
+      <div className={`p-3 border-top mt-auto ${styles.logoutSection}`}>
         <button
           onClick={handleLogout}
-          className="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2"
+          className={`  w-100 d-flex align-items-center justify-content-center gap-2 ${styles.logoutButton}`}
         >
           <LogOut size={20} />
           <span>Cerrar Sesión</span>
@@ -97,4 +94,5 @@ const Sidebar = ({ usuario, isSidebarOpen }) => {
     </div>
   );
 };
+
 export default Sidebar;

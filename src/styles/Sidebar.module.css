@@ -1,0 +1,65 @@
+.sidebar{
+    background-color: rgb(242, 227, 252);
+}
+.profile,
+.logoutSection{
+   background-color: #8a3fbd;
+}
+.displayName{
+    font-size: clamp(1.5rem, 2vw, 1.2rem);
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.973);
+}
+.displayName::first-letter {
+    text-transform: uppercase;
+  }
+.email{
+    color: #ffffff;
+}
+.navMenu{
+    color: rgb(0, 0, 0);
+}
+.menuList{
+    border-radius: 20%;
+}
+.menuItem{
+    background: linear-gradient(90deg, #9a4dcd, #e9e9e9a4);
+    box-shadow: 3px 3px 4px 3px  rgba(81, 80, 80, 0.5);
+    transition: transform 0.3s ease;
+}
+.menuItem:hover {
+    cursor: pointer;
+    transform: scale(1.04);
+  }
+  .logoutButton{
+    border-radius: 15px;
+    color: #ffffff;
+    background: linear-gradient(90deg, #9a4dcd, #e9e9e9a4);
+    box-shadow: 3px 3px 3px rgba(81, 80, 80, 0.5);
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    border: none;
+    padding: 8px;
+    
+  }
+  .logoutButton:hover {
+    cursor: pointer;
+    transform: scale(1.04);
+  }
+.container{
+    background: url('/src/assets/degra0.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+  
+}
+.image{
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    width: 40%;
+    height: 60%;
+}
