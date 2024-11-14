@@ -23,5 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 
-credenciales.js
-src/credenciales.js
+process.env
+src/process.env
