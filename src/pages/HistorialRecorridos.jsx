@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { appFirebase } from "../credenciales";
 import { getAuth } from "firebase/auth";
+import Layout from "../components/Layout";
 
 const HistorialRecorridos = () => {
   const [historialData, setHistorialData] = useState([]);
@@ -15,16 +16,29 @@ const HistorialRecorridos = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [usuario, setUsuario] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const auth = getAuth(appFirebase);
-    const currentUser = auth.currentUser;
 
-    if (currentUser) {
-      setUserId(currentUser.uid);
-    } else {
-      console.error("No hay un usuario autenticado.");
-    }
+    // Configurar un observer para el estado de autenticación
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserId(user.uid);
+        setUsuario({
+          displayName: user.displayName || "Usuario",
+          email: user.email,
+          uid: user.uid,
+        });
+      } else {
+        console.error("No hay un usuario autenticado.");
+      }
+      setIsLoading(false);
+    });
+
+    // Limpiar el observer cuando el componente se desmonte
+    return () => unsubscribe();
   }, []);
 
   const formatToColombianTime = (timestamp) => {
@@ -157,85 +171,89 @@ const HistorialRecorridos = () => {
   };
 
   return (
-    <div className="historial-container">
-      <h2 className="historial-title">Historial de Recorridos</h2>
+    <Layout usuario={usuario}>
+      <div className="historial-container">
+        <h2 className="historial-title">Historial de Recorridos</h2>
 
-      <div className="filter-container">
-        <input
-          type="date"
-          value={filterDate}
-          onChange={(e) => handleDateChange(e.target.value)}
-          placeholder="Filtrar por fecha"
-        />
-        <input
-          type="text"
-          placeholder="Filtrar por lugar"
-          value={filterLocation}
-          onChange={(e) => setFilterLocation(e.target.value)}
-        />
-      </div>
+        <div className="filter-container">
+          <input
+            type="date"
+            value={filterDate}
+            onChange={(e) => handleDateChange(e.target.value)}
+            placeholder="Filtrar por fecha"
+          />
+          <input
+            type="text"
+            placeholder="Filtrar por lugar"
+            value={filterLocation}
+            onChange={(e) => setFilterLocation(e.target.value)}
+          />
+        </div>
 
-      {filteredData.map((item) => (
-        <div key={item.id} className="recorrido-card">
-          <div
-            className="recorrido-header"
-            onClick={() => setSelectedRecorrido(item.recorrido)}
-          >
-            <h3 className="recorrido-fecha">
-              📅 {format(new Date(item.fecha), "dd/MM/yyyy")}
-            </h3>
-            <p className="recorrido-notas">📝 {item.notas}</p>
-            {item.alertas && (
-              <p className="recorrido-alertas">🔔 {item.alertas.join(", ")}</p>
+        {filteredData.map((item) => (
+          <div key={item.id} className="recorrido-card">
+            <div
+              className="recorrido-header"
+              onClick={() => setSelectedRecorrido(item.recorrido)}
+            >
+              <h3 className="recorrido-fecha">
+                📅 {format(new Date(item.fecha), "dd/MM/yyyy")}
+              </h3>
+              <p className="recorrido-notas">📝 {item.notas}</p>
+              {item.alertas && (
+                <p className="recorrido-alertas">
+                  🔔 {item.alertas.join(", ")}
+                </p>
+              )}
+            </div>
+
+            {isEditing && editData && editData.id === item.id ? (
+              <div className="edit-form">
+                {/* ... (código del formulario de edición se mantiene igual) ... */}
+              </div>
+            ) : (
+              <div>
+                <ul className="recorrido-list">
+                  {item.recorrido.map((loc, index) => (
+                    <li key={index} className="recorrido-item">
+                      <p>
+                        <strong>📍 Ubicación:</strong> (
+                        {loc.latitude.toFixed(4)}, {loc.longitude.toFixed(4)})
+                      </p>
+                      <p>
+                        <strong>⏰ Hora:</strong> {loc.hora || "No disponible"}
+                      </p>
+                      <p>
+                        <strong>🕒 Duración de estancia:</strong>{" "}
+                        {loc.duracion || "0"} min
+                      </p>
+                      <p>
+                        <strong>📌 Lugar:</strong>{" "}
+                        {loc.lugar || "Sin especificar"}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+                <button onClick={() => handleEdit(item)}>Editar</button>
+                <button onClick={() => handleDelete(item.id)}>Eliminar</button>
+              </div>
             )}
           </div>
+        ))}
 
-          {isEditing && editData && editData.id === item.id ? (
-            <div className="edit-form">
-              {/* ... (código del formulario de edición se mantiene igual) ... */}
-            </div>
-          ) : (
-            <div>
-              <ul className="recorrido-list">
-                {item.recorrido.map((loc, index) => (
-                  <li key={index} className="recorrido-item">
-                    <p>
-                      <strong>📍 Ubicación:</strong> ({loc.latitude.toFixed(4)},{" "}
-                      {loc.longitude.toFixed(4)})
-                    </p>
-                    <p>
-                      <strong>⏰ Hora:</strong> {loc.hora || "No disponible"}
-                    </p>
-                    <p>
-                      <strong>🕒 Duración de estancia:</strong>{" "}
-                      {loc.duracion || "0"} min
-                    </p>
-                    <p>
-                      <strong>📌 Lugar:</strong>{" "}
-                      {loc.lugar || "Sin especificar"}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-              <button onClick={() => handleEdit(item)}>Editar</button>
-              <button onClick={() => handleDelete(item.id)}>Eliminar</button>
-            </div>
-          )}
+        {selectedRecorrido && <DynamicMap recorrido={selectedRecorrido} />}
+
+        <div className="stats-container">
+          <h3>Estadísticas de Recorridos</h3>
+          <BarChart width={500} height={300} data={statsData}>
+            <XAxis dataKey="fecha" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="tiempo" fill="#0d6efd" />
+          </BarChart>
         </div>
-      ))}
-
-      {selectedRecorrido && <DynamicMap recorrido={selectedRecorrido} />}
-
-      <div className="stats-container">
-        <h3>Estadísticas de Recorridos</h3>
-        <BarChart width={500} height={300} data={statsData}>
-          <XAxis dataKey="fecha" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="tiempo" fill="#0d6efd" />
-        </BarChart>
       </div>
-    </div>
+    </Layout>
   );
 };
 
