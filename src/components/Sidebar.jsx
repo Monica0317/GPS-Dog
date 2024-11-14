@@ -20,11 +20,7 @@ const Sidebar = ({ usuario, isSidebarOpen }) => {
       icon: <Map size={20} />,
       path: "/mapa",
     },
-    {
-      title: "Alertas y Notificaciones",
-      icon: <Bell size={20} />,
-      path: "/notificaciones",
-    },
+   
     {
       title: "Historial de recorridos",
       icon: <History size={20} />,
