@@ -3,9 +3,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./credenciales";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Index from "./pages/Index";
 import Perfil from "./pages/Perfil";
@@ -15,23 +13,19 @@ import HistorialRecorridos from "./pages/HistorialRecorridos";
 
 import "./App.css";
 
-
-function NavBar() {
-  return (
-    <nav>
-      <Link to="/">Inicio</Link>
-      <Link to="/recursos">Consejos y Recursos</Link>
-      <Link to="/historial">Historial de Recorridos</Link>
-    </nav>
-  );
-}
-
 function App() {
   const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Manejo de autenticación y estado del usuario
   useEffect(() => {
+    const handleBeforeUnload = () => {
+      signOut(auth).catch((error) => {
+        console.error("Error al cerrar sesión:", error);
+      });
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     const unsubscribe = onAuthStateChanged(auth, (usuarioFirebase) => {
       if (usuarioFirebase) {
         sessionStorage.setItem("isAuthenticated", "true");
@@ -43,7 +37,19 @@ function App() {
       setLoading(false);
     });
 
+    const checkSession = () => {
+      const isAuthenticated = sessionStorage.getItem("isAuthenticated");
+      if (!isAuthenticated) {
+        signOut(auth).catch((error) => {
+          console.error("Error al cerrar sesión:", error);
+        });
+      }
+    };
+
+    checkSession();
+
     return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
       unsubscribe();
     };
   }, []);
@@ -56,13 +62,14 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Rutas principales */}
           <Route
             path="/"
             element={
               usuario ? (
                 <>
-                  <NavBar />
+                  <nav>
+                    <Link to="/">Inicio</Link>
+                  </nav>
                   <Home usuario={usuario} />
                 </>
               ) : (
@@ -71,12 +78,10 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
-          <Route path="/SignUp" element={<SignUp />} />
           <Route
             path="/perfil-mascota"
             element={
               <>
-                <NavBar />
                 <Perfil usuario={usuario} />
               </>
             }
@@ -85,7 +90,6 @@ function App() {
             path="/mapa"
             element={
               <>
-                <NavBar />
                 <Map usuario={usuario} />
               </>
             }
@@ -94,7 +98,10 @@ function App() {
             path="/recursos"
             element={
               <>
-                <NavBar />
+                <nav>
+                  <Link to="/">Inicio</Link>
+                  <Link to="/recursos">Consejos y Recursos</Link>
+                </nav>
                 <Tips />
               </>
             }
@@ -103,7 +110,10 @@ function App() {
             path="/historial"
             element={
               <>
-                <NavBar />
+                <nav>
+                  <Link to="/">Inicio</Link>
+                  <Link to="/historial">Historial de Recorridos</Link>
+                </nav>
                 <HistorialRecorridos />
               </>
             }
