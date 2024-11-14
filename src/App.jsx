@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Signup from './pages/SignUp';
 import Index from "./pages/Index";
 import Perfil from "./pages/Perfil";
 import Map from "./pages/Map";
@@ -78,6 +79,7 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
+          <Route path="/signUp" element={<Signup />} />
           <Route
             path="/perfil-mascota"
             element={
