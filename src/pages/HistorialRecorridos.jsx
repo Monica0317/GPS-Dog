@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../styles/HistorialRecorridos.css";
-import DynamicMap, { getLocationHistory } from "../components/DynamicMap";
-import { BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
+import { getLocationHistory } from "../components/DynamicMap";
 import { format } from "date-fns";
-import { getDatabase, ref, child, get } from "firebase/database";
+import { getDatabase, ref, get } from "firebase/database";
 import { appFirebase } from "../credenciales";
 import { getAuth } from "firebase/auth";
 import Layout from "../components/Layout";
@@ -21,8 +20,6 @@ const HistorialRecorridos = () => {
 
   useEffect(() => {
     const auth = getAuth(appFirebase);
-
-    // Configurar un observer para el estado de autenticación
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUserId(user.uid);
@@ -33,11 +30,11 @@ const HistorialRecorridos = () => {
         });
       } else {
         console.error("No hay un usuario autenticado.");
+        setUserId(null);
       }
       setIsLoading(false);
     });
 
-    // Limpiar el observer cuando el componente se desmonte
     return () => unsubscribe();
   }, []);
 
@@ -48,11 +45,11 @@ const HistorialRecorridos = () => {
     const date = new Date(timestamp);
 
     // Ajustar a hora colombiana (UTC-5)
-    date.setHours(date.getHours() - 5);
+    date.setHours(date.getHours());
 
     // Obtener horas y minutos
     let hours = date.getHours();
-    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
     const ampm = hours >= 12 ? "PM" : "AM";
 
     // Convertir a formato 12 horas
@@ -63,7 +60,7 @@ const HistorialRecorridos = () => {
     const formattedTime =
       String(hours).padStart(2, "0") +
       ":" +
-      String(minutes).padStart(2, "0") +
+      String(seconds).padStart(2, "0") +
       " " +
       ampm;
 
@@ -240,18 +237,6 @@ const HistorialRecorridos = () => {
             )}
           </div>
         ))}
-
-        {selectedRecorrido && <DynamicMap recorrido={selectedRecorrido} />}
-
-        <div className="stats-container">
-          <h3>Estadísticas de Recorridos</h3>
-          <BarChart width={500} height={300} data={statsData}>
-            <XAxis dataKey="fecha" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="tiempo" fill="#0d6efd" />
-          </BarChart>
-        </div>
       </div>
     </Layout>
   );

@@ -8,26 +8,18 @@ import {
   useMap,
 } from "react-leaflet";
 import L from "leaflet";
-import {
-  getDatabase,
-  ref,
-  get,
-  query,
-  orderByChild,
-  equalTo,
-  onValue,
-} from "firebase/database";
+import { getDatabase, ref, get, onValue } from "firebase/database";
 import { appFirebase } from "../credenciales";
 
 const db = getDatabase(appFirebase);
 
 const getLocationHistory = async (userId, selectedDate) => {
-  try {
-    if (!userId || !selectedDate) {
-      console.warn("ID de usuario o fecha no proporcionados.");
-      return [];
-    }
+  if (!userId || !selectedDate) {
+    console.warn("ID de usuario o fecha no proporcionados.");
+    return [];
+  }
 
+  try {
     const db = getDatabase(appFirebase);
     const userLocationRef = ref(
       db,
@@ -36,18 +28,38 @@ const getLocationHistory = async (userId, selectedDate) => {
     const snapshot = await get(userLocationRef);
 
     if (snapshot.exists()) {
-      const locations = Object.values(snapshot.val());
-      return locations.map((loc) => ({
-        latitude: loc.latitude,
-        longitude: loc.longitude,
-        timestamp: loc.timestamp,
-      }));
+      const locationData = snapshot.val();
+
+      // Recorrer cada entrada del día seleccionado para obtener las ubicaciones
+      const locationArray = Object.keys(locationData).flatMap((dateKey) => {
+        const dateGroup = locationData[dateKey];
+        return Object.keys(dateGroup)
+          .map((entryKey) => {
+            const entry = dateGroup[entryKey];
+            if (
+              entry &&
+              typeof entry.latitude === "number" &&
+              typeof entry.longitude === "number" &&
+              entry.timestamp
+            ) {
+              return {
+                latitude: entry.latitude,
+                longitude: entry.longitude,
+                timestamp: entry.timestamp,
+              };
+            }
+            return null;
+          })
+          .filter(Boolean);
+      });
+
+      return locationArray;
     } else {
-      console.warn("No se encontraron datos para la fecha seleccionada.");
+      console.warn("No se encontró historial de ubicaciones en Firebase.");
       return [];
     }
   } catch (error) {
-    console.error("Error al obtener el historial de ubicaciones:", error);
+    console.error("Error al procesar el historial de ubicaciones:", error);
     return [];
   }
 };
